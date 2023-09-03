@@ -4,8 +4,9 @@ import { Knex } from "knex";
 export async function up(knex: Knex): Promise<void> {
     await knex.schema.createTable('lancamento',(table) => {
         table.uuid('id').primary()
-        table.bigInteger('id_fornecedor').unsigned().index().references('id').inTable('lancamento');
-        table.bigInteger('id_nota').unsigned().index().references('id').inTable('lancamento');
+        //table.foreign('id_fornecedor').references('id').inTable('fornecedor')
+        table.uuid('id_nota').unsigned()
+        table.foreign('id_nota').references('id').inTable('notafiscal')
         table.timestamp('data_vencimento')
         table.timestamp('data_pagamento')
         table.float('valor').notNullable()
@@ -14,8 +15,7 @@ export async function up(knex: Knex): Promise<void> {
     })
 }
 
-
 export async function down(knex: Knex): Promise<void> {
-    await knex.schema.dropTable('lancamentos')
+    await knex.schema.dropTable('lancamento')
 }
 
